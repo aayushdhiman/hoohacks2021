@@ -334,7 +334,7 @@ class Ui_MainWindow(object):
         self.budgetTab = QtWidgets.QWidget()
         self.budgetTab.setObjectName("budgetTab")
         self.allotmentsTable = QtWidgets.QTableWidget(self.budgetTab)
-        self.allotmentsTable.setGeometry(QtCore.QRect(10, 10, 561, 611))
+        self.allotmentsTable.setGeometry(QtCore.QRect(10, 10, 561, 671))
         self.allotmentsTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.allotmentsTable.setDragEnabled(True)
         self.allotmentsTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)

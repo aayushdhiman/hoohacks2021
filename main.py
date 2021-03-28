@@ -53,7 +53,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionLight.triggered.connect(self.change_to_light_theme)
         self.actionDark.triggered.connect(self.change_to_dark_theme)
 
-        self.change_to_dark_theme()
+        self.change_to_light_theme()
 
         self.setWindowTitle("Phynance Manager")
         self.show()

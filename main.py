@@ -23,7 +23,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.removeButton.clicked.connect(self.remove_expenses)
 
         self.expenses = []
-        self.total_cost = 0
+        self.total_expenses = 0
+        self.grand_total_expenses = 0
+
+        self.income = 0
+        self.balance = 0
+
+        self.incomeBox.valueChanged.connect(self.update_balance)
+
+        self.percentageLabel.setHidden(True)
+        self.flatOrPercentage.currentTextChanged.connect(self.update_flat_percentage)
+
+        self.allotments = []
+
+        self.addAllotmentButton.clicked.connect(self.add_allotment)
 
     def calculate_required_payments(self, state):
         if state != "Select a state...":
@@ -48,14 +61,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         utilities_cost = self.utilitiesBox.value()
         transportation_cost = self.transportationBox.value()
         misc_cost = self.miscBox.value()
-        self.total_cost = round(grocery_cost + housing_cost + utilities_cost + transportation_cost + misc_cost, 2)
+        self.total_expenses = round(grocery_cost + housing_cost + utilities_cost + transportation_cost + misc_cost, 2)
 
-        self.totalBox.setText("{:.2f}".format(self.total_cost))
+        self.totalBox.setText("{:.2f}".format(self.total_expenses))
 
     def add_expense(self):
         self.expenses.append(
             {
-                "date": self.calendarWidget.selectedDate().toString("M/d/yyyy"),
+                "date": self.expenseCalendar.selectedDate().toString("M/d/yyyy"),
                 "description": self.descriptionBox.text(),
                 "transfer": self.transferBox.text(),
                 "amount": self.amountBox.value()
@@ -87,8 +100,64 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             expense_costs.append(expense["amount"])
 
-        grand_total = round(sum(expense_costs) + self.total_cost, 2)
-        self.grandTotalBox.setText("{:.2f}".format(grand_total))
+        self.grand_total_expenses = round(sum(expense_costs) + self.total_expenses, 2)
+        self.grandTotalBox.setText("{:.2f}".format(self.grand_total_expenses))
+
+        self.update_balance()
+
+    def update_balance(self):
+        self.income = self.incomeBox.value()
+        self.balance = round(self.income - self.grand_total_expenses, 2)
+        self.balanceDisplay.display(self.balance)
+
+        self.update_allotments()
+
+    def update_flat_percentage(self, selection):
+        self.flatLabel.setHidden(selection == "Percentage")
+        self.percentageLabel.setHidden(selection == "Flat")
+
+    def add_allotment(self):
+        self.allotments.append(
+            {
+                "category": self.categoryBox.text(),
+                "priority": self.priorityBox.value(),
+                "amount": self.allotmentAmountBox.value(),
+                "fp": self.flatOrPercentage.currentText(),
+                "result": "",
+                "remainder": ""
+            }
+        )
+        self.update_allotments()
+
+    def update_allotments(self):
+        self.allotmentsTable.clearContents()
+        self.allotmentsTable.setRowCount(len(self.allotments))
+
+        self.amount_left = self.balance
+
+        self.allotments = sorted(self.allotments, key=lambda k: k["priority"])
+
+        for allotment in self.allotments:
+            if allotment["fp"] == "Flat":
+                allotment["result"] = allotment["amount"]
+                self.amount_left -= allotment["amount"]
+            else:
+                deduction = round(self.amount_left * (allotment["amount"] / 100), 2)
+                allotment["result"] = deduction
+                self.amount_left -= deduction
+            self.amount_left = round(self.amount_left, 2)
+            allotment["remainder"] = self.amount_left
+
+        for index, allotment in enumerate(self.allotments):
+            self.allotmentsTable.setItem(index, 0, QTableWidgetItem(allotment["category"]))
+            self.allotmentsTable.setItem(index, 1, QTableWidgetItem(str(allotment["priority"])))
+            if allotment["fp"] == "Flat":
+                self.allotmentsTable.setItem(index, 2, QTableWidgetItem("${:.2f}".format(allotment["amount"])))
+            else:
+                self.allotmentsTable.setItem(index, 2, QTableWidgetItem("{:.2f}%".format(allotment["amount"])))
+            self.allotmentsTable.setItem(index, 3, QTableWidgetItem("${:.2f}".format(allotment["result"])))
+            self.allotmentsTable.setItem(index, 4, QTableWidgetItem("${:.2f}".format(allotment["remainder"])))
+
 
 if __name__ == "__main__":
     app = QApplication([])

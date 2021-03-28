@@ -15,6 +15,15 @@ average_costs = {
 }
 
 def get_state_cost(state, category):
+    """Calculates the annual average costs for a state in a certain category.
+
+    Args:
+        state (str): The state.
+        category (str): The category (grocery, housing, utilities, transportation, misc).
+
+    Returns:
+        float: The annual cost.
+    """
     return average_costs[category] - average_costs[category] * ((100 - float(coli[state][f"{category}Cost"])) / 100)
 
 # average_whatever - average_whatever * ((100 - index) / 100)

@@ -5,6 +5,8 @@ from window import Ui_MainWindow
 
 import coli
 
+import qdarkstyle
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs) -> None:
@@ -19,8 +21,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.transportationBox.valueChanged.connect(self.update_total_payments)
         self.miscBox.valueChanged.connect(self.update_total_payments)
 
-        self.addButton.clicked.connect(self.add_expense)
-        self.removeButton.clicked.connect(self.remove_expenses)
+        self.addExpense.clicked.connect(self.add_expense)
+        self.removeExpense.clicked.connect(self.remove_expenses)
 
         self.expenses = []
         self.total_expenses = 0
@@ -36,7 +38,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.allotments = []
 
-        self.addAllotmentButton.clicked.connect(self.add_allotment)
+        self.addAllotment.clicked.connect(self.add_allotment)
+        self.removeAllotment.clicked.connect(self.remove_allotments)
+
+        self.light_theme = self.styleSheet()
+        self.dark_theme = qdarkstyle.load_stylesheet()
+
+        self.actionLight.triggered.connect(self.change_to_light_theme)
+        self.actionDark.triggered.connect(self.change_to_dark_theme)
+
+        self.change_to_dark_theme()
 
     def calculate_required_payments(self, state):
         if state != "Select a state...":
@@ -101,7 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             expense_costs.append(expense["amount"])
 
         self.grand_total_expenses = round(sum(expense_costs) + self.total_expenses, 2)
-        self.grandTotalBox.setText("{:.2f}".format(self.grand_total_expenses))
+        self.grandTotalExpensesBox.setText("{:.2f}".format(self.grand_total_expenses))
 
         self.update_balance()
 
@@ -127,6 +138,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "remainder": ""
             }
         )
+        self.update_allotments()
+
+    def remove_allotments(self):
+        selections = self.allotmentsTable.selectedItems()
+        rows_to_delete = reversed(
+            sorted(list({selection.row() for selection in selections}))
+        )
+
+        for row in rows_to_delete:
+            del self.allotments[row]
+
         self.update_allotments()
 
     def update_allotments(self):
@@ -158,6 +180,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.allotmentsTable.setItem(index, 3, QTableWidgetItem("${:.2f}".format(allotment["result"])))
             self.allotmentsTable.setItem(index, 4, QTableWidgetItem("${:.2f}".format(allotment["remainder"])))
 
+    def change_to_light_theme(self):
+        self.setStyleSheet(self.light_theme)
+
+    def change_to_dark_theme(self):
+        self.setStyleSheet(self.dark_theme)
 
 if __name__ == "__main__":
     app = QApplication([])

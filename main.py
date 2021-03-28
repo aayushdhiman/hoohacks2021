@@ -22,11 +22,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.miscBox.valueChanged.connect(self.update_total_payments)
 
         self.addExpense.clicked.connect(self.add_expense)
-        self.removeExpense.clicked.connect(self.remove_expenses)
+        self.removeExpenses.clicked.connect(self.remove_expenses)
+
+        self.addAsset.clicked.connect(self.add_asset)
+        self.removeAssets.clicked.connect(self.remove_assets)
 
         self.expenses = []
         self.total_expenses = 0
         self.grand_total_expenses = 0
+
+        self.assets = []
+        self.grand_total_assets = 0
 
         self.income = 0
         self.balance = 0
@@ -80,9 +86,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.expenses.append(
             {
                 "date": self.expenseCalendar.selectedDate().toString("M/d/yyyy"),
-                "description": self.descriptionBox.text(),
-                "transfer": self.transferBox.text(),
-                "amount": self.amountBox.value()
+                "description": self.expenseDescriptionBox.text(),
+                "transfer": self.expenseTransferBox.text(),
+                "amount": self.expenseAmountBox.value()
             }
         )
         self.update_expenses()
@@ -116,9 +122,47 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.update_balance()
 
+    def add_asset(self):
+        self.assets.append(
+            {
+                "date": self.assetCalendar.selectedDate().toString("M/d/yyyy"),
+                "description": self.assetDescriptionBox.text(),
+                "value": self.assetValueBox.value()
+            }
+        )
+        self.update_assets()
+
+    def remove_assets(self):
+        selections = self.assetsTable.selectedItems()
+        rows_to_delete = reversed(
+            sorted(list({selection.row() for selection in selections}))
+        )
+
+        for row in rows_to_delete:
+            del self.assets[row]
+
+        self.update_assets()
+
+    def update_assets(self):
+        self.assetsTable.clearContents()
+        self.assetsTable.setRowCount(len(self.assets))
+
+        asset_values = []
+        for index, asset in enumerate(self.assets):
+            self.assetsTable.setItem(index, 0, QTableWidgetItem(asset["date"]))
+            self.assetsTable.setItem(index, 1, QTableWidgetItem(asset["description"]))
+            self.assetsTable.setItem(index, 2, QTableWidgetItem("${:.2f}".format(asset['value'])))
+
+            asset_values.append(asset["value"])
+
+        self.grand_total_assets = round(sum(asset_values), 2)
+        self.grandTotalAssetsBox.setText("{:.2f}".format(self.grand_total_assets))
+
+        self.update_balance()
+
     def update_balance(self):
         self.income = self.incomeBox.value()
-        self.balance = round(self.income - self.grand_total_expenses, 2)
+        self.balance = round(self.income + self.grand_total_assets - self.grand_total_expenses, 2)
         self.balanceDisplay.display(self.balance)
 
         self.update_allotments()

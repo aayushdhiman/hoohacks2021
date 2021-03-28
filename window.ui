@@ -194,7 +194,7 @@
         <enum>QCalendarWidget::NoVerticalHeader</enum>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="amountBox">
+      <widget class="QDoubleSpinBox" name="expenseAmountBox">
        <property name="geometry">
         <rect>
          <x>90</x>
@@ -210,7 +210,7 @@
         <double>0.010000000000000</double>
        </property>
       </widget>
-      <widget class="QLineEdit" name="descriptionBox">
+      <widget class="QLineEdit" name="expenseDescriptionBox">
        <property name="geometry">
         <rect>
          <x>90</x>
@@ -223,7 +223,7 @@
         <string>Description of payment</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="transferBox">
+      <widget class="QLineEdit" name="expenseTransferBox">
        <property name="geometry">
         <rect>
          <x>90</x>
@@ -249,7 +249,7 @@
         <string>Add</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="removeExpense">
+      <widget class="QPushButton" name="removeExpenses">
        <property name="geometry">
         <rect>
          <x>200</x>
@@ -930,7 +930,7 @@
      <widget class="QLabel" name="grandTotalLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>650</y>
         <width>291</width>
         <height>31</height>
@@ -1022,8 +1022,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>650</y>
+        <x>317</x>
+        <y>652</y>
         <width>251</width>
         <height>31</height>
        </rect>
@@ -1091,7 +1091,7 @@
         <string>Value</string>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="valueBox">
+      <widget class="QDoubleSpinBox" name="assetValueBox">
        <property name="geometry">
         <rect>
          <x>90</x>
@@ -1241,7 +1241,7 @@
        <rect>
         <x>580</x>
         <y>10</y>
-        <width>331</width>
+        <width>391</width>
         <height>211</height>
        </rect>
       </property>
@@ -1292,7 +1292,7 @@
         <rect>
          <x>90</x>
          <y>130</y>
-         <width>101</width>
+         <width>121</width>
          <height>22</height>
         </rect>
        </property>
@@ -1321,7 +1321,7 @@
         <rect>
          <x>10</x>
          <y>170</y>
-         <width>151</width>
+         <width>181</width>
          <height>31</height>
         </rect>
        </property>
@@ -1332,9 +1332,9 @@
       <widget class="QPushButton" name="removeAllotment">
        <property name="geometry">
         <rect>
-         <x>170</x>
+         <x>200</x>
          <y>170</y>
-         <width>151</width>
+         <width>181</width>
          <height>31</height>
         </rect>
        </property>
@@ -1345,7 +1345,7 @@
       <widget class="QLabel" name="flatLabel">
        <property name="geometry">
         <rect>
-         <x>80</x>
+         <x>70</x>
          <y>130</y>
          <width>16</width>
          <height>20</height>
@@ -1360,7 +1360,7 @@
         <rect>
          <x>90</x>
          <y>60</y>
-         <width>42</width>
+         <width>121</width>
          <height>22</height>
         </rect>
        </property>
@@ -1377,9 +1377,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>195</x>
+         <x>216</x>
          <y>130</y>
-         <width>16</width>
+         <width>21</width>
          <height>20</height>
         </rect>
        </property>
@@ -1392,7 +1392,7 @@
         <rect>
          <x>90</x>
          <y>100</y>
-         <width>101</width>
+         <width>121</width>
          <height>22</height>
         </rect>
        </property>
@@ -1407,30 +1407,6 @@
         </property>
        </item>
       </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="stocksTab">
-     <attribute name="title">
-      <string>Stocks</string>
-     </attribute>
-     <widget class="QTextBrowser" name="textBrowser">
-      <property name="geometry">
-       <rect>
-        <x>240</x>
-        <y>130</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-      <property name="html">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;show Dow, Nasdaq, S&amp;amp;P, and some others from user input&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;if i can somehow get a plotly graph to work on pyqt5 that would be epic&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
      </widget>
     </widget>
    </widget>

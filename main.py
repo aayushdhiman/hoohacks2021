@@ -55,6 +55,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.change_to_dark_theme()
 
+        self.setWindowTitle("Phynance Manager")
+        self.show()
+
     def calculate_required_payments(self, state):
         if state != "Select a state...":
             grocery_cost = round(coli.get_state_cost(state, "grocery") / 12, 2)
@@ -230,10 +233,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def change_to_dark_theme(self):
         self.setStyleSheet(self.dark_theme)
 
+
 if __name__ == "__main__":
     app = QApplication([])
-    app.setApplicationName("Phynance Manager")
-
     window = MainWindow()
-    window.show()
+
     sys.exit(app.exec_())
